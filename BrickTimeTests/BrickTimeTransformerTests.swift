@@ -32,4 +32,14 @@ struct BrickTimeTransformerTests {
         #expect(time.fiveHours == [.red, .red, .off, .off])
         #expect(time.singleHours == [.red, .red, .red, .off])
     }
+    
+    @Test("17 minutes lights correct minute rows")
+    func testMinutesRowsConversion() {
+        
+        let transformer = BrickTimeTransformer()
+        let time = transformer.transforme(hour: 0, minutes: 17, seconds: 0)
+        
+        #expect(time.fiveMinutes == [.yellow, .yellow, .yellow, .off, .off, .off, .off, .off, .off, .off, .off])
+        #expect(time.singleMinutes == [.yellow, .yellow, .off, .off])
+    }
 }
