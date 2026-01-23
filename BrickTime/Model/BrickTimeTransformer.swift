@@ -7,15 +7,25 @@
 
 import Foundation
 
-struct BrickTimeTransformer {
+// MARK: - protocols
+protocol BrickTimeTransforming {
+    func transforme(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState
+}
+
+// MARK: - structs
+struct BrickTimeTransformer: BrickTimeTransforming {
     
-    func transforme(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState {
+    // MARK: - init
+    public init() {}
+    
+    // MARK: - public funcs
+    public func transforme(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState {
         BrickTimeState (
-            seconds: false,
-            fiveHours: [],
-            singleHours: [],
-            fiveMinutes: [],
-            singleMinutes: []
+            seconds: true,
+            fiveHours: [.off, .off, .off, .off],
+            singleHours: [.off, .off, .off, .off],
+            fiveMinutes: Array(repeating: .off, count: 11),
+            singleMinutes: [.off, .off, .off, .off]
         )
     }
 }
