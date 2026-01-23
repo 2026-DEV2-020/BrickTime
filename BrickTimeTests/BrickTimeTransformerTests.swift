@@ -14,7 +14,7 @@ struct BrickTimeTransformerTests {
     func testMidnight() {
         
         let transformer = BrickTimeTransformer()
-        let time = transformer.transforme(hour: 0, minutes: 0, seconds: 0)
+        let time = transformer.transform(hour: 0, minutes: 0, seconds: 0)
         
         #expect(time.seconds == true)
         #expect(time.fiveHours == [.off, .off, .off, .off])
@@ -27,7 +27,7 @@ struct BrickTimeTransformerTests {
     func testHourRowsConversion() {
         
         let transformer = BrickTimeTransformer()
-        let time = transformer.transforme(hour: 13, minutes: 0, seconds: 0)
+        let time = transformer.transform(hour: 13, minutes: 0, seconds: 0)
         
         #expect(time.fiveHours == [.red, .red, .off, .off])
         #expect(time.singleHours == [.red, .red, .red, .off])
@@ -37,7 +37,7 @@ struct BrickTimeTransformerTests {
     func testMinutesRowsConversion() {
         
         let transformer = BrickTimeTransformer()
-        let time = transformer.transforme(hour: 0, minutes: 17, seconds: 0)
+        let time = transformer.transform(hour: 0, minutes: 17, seconds: 0)
         
         #expect(time.fiveMinutes.prefix(3) == [.yellow, .yellow, .red])
         #expect(time.singleMinutes == [.yellow, .yellow, .off, .off])
@@ -47,7 +47,7 @@ struct BrickTimeTransformerTests {
     func testOddSecondsTurnOff() {
         
         let transformer = BrickTimeTransformer()
-        let time = transformer.transforme(hour: 0, minutes: 0, seconds: 1)
+        let time = transformer.transform(hour: 0, minutes: 0, seconds: 1)
         
         #expect(time.seconds == false)
     }
@@ -56,7 +56,7 @@ struct BrickTimeTransformerTests {
     func tesEvenSecondsTurnOn() {
         
         let transformer = BrickTimeTransformer()
-        let time = transformer.transforme(hour: 0, minutes: 0, seconds: 2)
+        let time = transformer.transform(hour: 0, minutes: 0, seconds: 2)
         
         #expect(time.seconds == true)
     }

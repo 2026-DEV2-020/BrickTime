@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - protocols
 protocol BrickTimeTransforming {
-    func transforme(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState
+    func transform(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState
 }
 
 // MARK: - structs
@@ -19,7 +19,7 @@ struct BrickTimeTransformer: BrickTimeTransforming {
     public init() {}
     
     // MARK: - public funcs
-    public func transforme(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState {
+    public func transform(hour: Int, minutes: Int, seconds: Int) -> BrickTimeState {
         BrickTimeState (
             seconds: seconds % 2 == 0,
             fiveHours: row(count: hour / 5, total: 4, color: .red),
