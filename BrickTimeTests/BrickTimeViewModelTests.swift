@@ -41,6 +41,7 @@ struct BrickTimeViewModelTests {
         
         let calendar = Calendar(identifier: .gregorian)
         let initialDate = calendar.date(from: DateComponents(hour: 12, minute: 5, second: 9))!
+        
         let clock = FakeClock(initial: initialDate)
         let transformer = BrickTimeTransformer()
         let viewModel = BrickTimeViewModel(transformer: transformer, clock: clock)
@@ -50,5 +51,19 @@ struct BrickTimeViewModelTests {
         #expect(viewModel.time?.singleHours == [.red, .red, .off, .off])
         #expect(viewModel.time?.fiveMinutes.prefix(3) == [.yellow, .off, .off])
         #expect(viewModel.time?.singleMinutes == [.off, .off, .off, .off])
+    }
+    
+    @Test("Formatted time icludes, hours, minutes and seconds")
+    func testFormattedTime() async {
+        
+        let calendar = Calendar(identifier: .gregorian)
+        let initialDate = calendar.date(from: DateComponents(hour: 12, minute: 5, second: 9))!
+        
+        let clock = FakeClock(initial: initialDate)
+        let transformer = BrickTimeTransformer()
+        let viewModel = BrickTimeViewModel(transformer: transformer, clock: clock)
+
+        try? await Task.sleep(nanoseconds: 1_000_000)
+        #expect(viewModel.formattedTime == "12:05:09")
     }
 }
