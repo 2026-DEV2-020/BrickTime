@@ -42,4 +42,22 @@ struct BrickTimeTransformerTests {
         #expect(time.fiveMinutes.prefix(3) == [.yellow, .yellow, .red])
         #expect(time.singleMinutes == [.yellow, .yellow, .off, .off])
     }
+    
+    @Test("Odd seconds should turn the light off")
+    func testOddSecondsTurnOff() {
+        
+        let transformer = BrickTimeTransformer()
+        let time = transformer.transforme(hour: 0, minutes: 0, seconds: 1)
+        
+        #expect(time.seconds == false)
+    }
+    
+    @Test("Even seconds should turn the light on")
+    func tesEvenSecondsTurnOn() {
+        
+        let transformer = BrickTimeTransformer()
+        let time = transformer.transforme(hour: 0, minutes: 0, seconds: 2)
+        
+        #expect(time.seconds == true)
+    }
 }
