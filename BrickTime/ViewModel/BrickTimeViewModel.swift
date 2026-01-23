@@ -22,7 +22,7 @@ final class BrickTimeViewModel {
     
     // MARK: - private properties
     private(set) var time: BrickTimeState?
-    private(set) var formattedTime: String?
+    private(set) var formattedTime: String = "00:00:00"
     
     private let transformer: BrickTimeTransforming
     private let clock: ClockProviding
@@ -42,7 +42,11 @@ final class BrickTimeViewModel {
         let date = clock.now()
         let components = Calendar.current.dateComponents([.hour, .minute, .second], from: date)
         
-        self.time = transformer.transform(hour: components.hour ?? 0, minutes: components.minute ?? 0, seconds: components.second ?? 0)
-        self.formattedTime = "00:00:00"
+        let hour = components.hour ?? 0
+        let minutes = components.minute ?? 0
+        let seconds = components.second ?? 0
+        
+        self.time = transformer.transform(hour: hour, minutes: minutes, seconds: seconds)
+        self.formattedTime = String(format: "%02d:%02d:%02d", hour, minutes, seconds)
     }
 }
