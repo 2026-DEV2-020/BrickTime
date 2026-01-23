@@ -1,5 +1,5 @@
 //
-//  BrickTimeTests.swift
+//  BrickTimeTransformerTests.swift
 //  BrickTimeTests
 //
 //  Created by 2026-DEV2-020 on 23/01/2026.
@@ -8,10 +8,13 @@
 import Testing
 @testable import BrickTime
 
-struct BrickTimeTests {
-
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+struct BrickTimeTransformerTests {
+    
+    @Test("Midnight should turn all lights off")
+    func testMidnight() {
+        let transformer = BrickTimeTransformer()
+        let time = transformer.transforme(hour: 0, minutes: 0, seconds: 0)
+        #expect(time.seconds == true)
     }
-
+    
 }
