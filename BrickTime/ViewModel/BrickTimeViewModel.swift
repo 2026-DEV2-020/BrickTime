@@ -18,11 +18,12 @@ final class SystemClock: ClockProviding {
     }
 }
 
-final class BrickTimeViewModel {
+@MainActor
+final class BrickTimeViewModel: ObservableObject {
     
     // MARK: - private properties
-    private(set) var time: BrickTimeState?
-    private(set) var formattedTime: String = "00:00:00"
+    @Published private(set) var time: BrickTimeState
+    @Published private(set) var formattedTime: String = "00:00:00"
     
     private let transformer: BrickTimeTransforming
     private let clock: ClockProviding
@@ -34,19 +35,42 @@ final class BrickTimeViewModel {
         self.transformer = transformer
         self.clock = clock
         
-        self.updateTime(clock, transformer)
+        let (state, formattedTime) = Self.makeState(from: clock.now(), transformer: transformer)
+
+        self.time = state
+        self.formattedTime = formattedTime
+        
+
+        start()
     }
     
     // MARK: - private funcs
+    
+    private func start() {
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.updateTime(clock, transformer)
+            }
+    }
+    
     private func updateTime(_ clock: any ClockProviding, _ transformer: any BrickTimeTransforming) {
-        let date = clock.now()
+        let (state, formattedTime) = Self.makeState(from: clock.now(), transformer: transformer)
+        self.time = state
+        self.formattedTime = formattedTime
+    }
+    
+    private static func makeState(from date: Date, transformer: BrickTimeTransforming) -> (BrickTimeState, String) {
         let components = Calendar.current.dateComponents([.hour, .minute, .second], from: date)
         
         let hour = components.hour ?? 0
         let minutes = components.minute ?? 0
         let seconds = components.second ?? 0
         
-        self.time = transformer.transform(hour: hour, minutes: minutes, seconds: seconds)
-        self.formattedTime = String(format: "%02d:%02d:%02d", hour, minutes, seconds)
+        let state = transformer.transform(hour: hour, minutes: minutes, seconds: seconds)
+        let formattedTime = String(format: "%02d:%02d:%02d", hour, minutes, seconds)
+        
+        return (state, formattedTime)
     }
 }
