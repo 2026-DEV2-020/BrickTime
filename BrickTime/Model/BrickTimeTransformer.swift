@@ -24,13 +24,20 @@ struct BrickTimeTransformer: BrickTimeTransforming {
             seconds: seconds % 2 == 0,
             fiveHours: row(count: hour / 5, total: 4, color: .red),
             singleHours: row(count: hour % 5, total: 4, color: .red),
-            fiveMinutes: Array(repeating: .off, count: 11),
-            singleMinutes: [.off, .off, .off, .off]
+            fiveMinutes: fiveMinutesRow(minutes: minutes),
+            singleMinutes: row(count: minutes % 5, total: 4, color: .yellow)
         )
     }
     
     // MARK: - private funcs
     private func row(count: Int, total: Int, color: Light) -> [Light] {
         (0..<total).map { $0 < count ? color : .off }
+    }
+    
+    private func fiveMinutesRow(minutes: Int) -> [Light] {
+        (1...11).map {
+            guard $0 <= minutes / 5 else { return .off }
+            return $0 % 3 == 0 ? .red : .yellow
+        }
     }
 }
