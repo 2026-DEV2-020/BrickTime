@@ -34,8 +34,15 @@ final class BrickTimeViewModel {
         self.transformer = transformer
         self.clock = clock
         
-        let initialTime = transformer.transform(hour: 0, minutes: 0, seconds: 0)
-        self.time = initialTime
+        self.updateTime(clock, transformer)
+    }
+    
+    // MARK: - private funcs
+    private func updateTime(_ clock: any ClockProviding, _ transformer: any BrickTimeTransforming) {
+        let date = clock.now()
+        let components = Calendar.current.dateComponents([.hour, .minute, .second], from: date)
+        
+        self.time = transformer.transform(hour: components.hour ?? 0, minutes: components.minute ?? 0, seconds: components.second ?? 0)
         self.formattedTime = "00:00:00"
     }
 }
